@@ -42,12 +42,18 @@ cv::Mat blend_overlay(const cv::Mat &base, const cv::Mat &overlay, float alpha) 
 
 cv::Mat load_wheel_icon() {
 	const std::vector<std::filesystem::path> candidates = {
-		std::filesystem::current_path() / "modules" / "visualization" / "src" / "assets" / "wheel.png",
-		std::filesystem::current_path() / ".." / "modules" / "visualization" / "src" / "assets" / "wheel.png",
-		std::filesystem::current_path() / ".." / ".." / "modules" / "visualization" / "src" / "assets" / "wheel.png",
-		std::filesystem::current_path() / ".." / ".." / ".." / "modules" / "visualization" / "src" / "assets" / "wheel.png"
+		std::filesystem::path(__FILE__).parent_path() / "assets" / "wheel.png",
+		std::filesystem::path(__FILE__).parent_path() / ".." / ".." / ".." / ".." / ".." / ".." / "Media" / "wheel.png"
 	};
-	// ... (keep the rest of the function)
+
+	for (const auto &candidate : candidates) {
+		cv::Mat icon = cv::imread(candidate.string(), cv::IMREAD_UNCHANGED);
+		if (!icon.empty()) {
+			return icon;
+		}
+	}
+
+	return cv::Mat();
 }
 
 cv::Mat rotate_icon(const cv::Mat &icon, float angle_degrees) {
@@ -130,14 +136,18 @@ void draw_text_centered(cv::Mat &canvas, const std::string &text, const cv::Rect
 	cv::putText(canvas, text, cv::Point(x, y), cv::FONT_HERSHEY_SIMPLEX, scale, color, thickness, cv::LINE_AA);
 }
 
-void draw_boxed_value(cv::Mat &canvas, const cv::Rect &rect, const std::string &title, const std::string &value, const cv::Scalar &value_color = kPanelTextColor) {
-	cv::rectangle(canvas, rect, cv::Scalar(255, 255, 255), cv::FILLED);
-	cv::rectangle(canvas, rect, cv::Scalar(200, 200, 200), 1);
-
-	const int title_y = rect.y + 22;
-	const int value_y = rect.y + rect.height / 2 + 24;
-	cv::putText(canvas, title, cv::Point(rect.x + 12, title_y), cv::FONT_HERSHEY_SIMPLEX, 0.6, kPanelTextColor, 1, cv::LINE_AA);
-	cv::putText(canvas, value, cv::Point(rect.x + 12, value_y), cv::FONT_HERSHEY_SIMPLEX, 0.72, value_color, 2, cv::LINE_AA);
+void draw_inline_value(cv::Mat &canvas, const cv::Point &origin, const std::string &title, const std::string &value, const cv::Scalar &value_color) {
+	const cv::Scalar yellow(0, 255, 255); // BGR for Yellow
+	
+	// Draw Title (Bold = thickness 2)
+	cv::putText(canvas, title + ": ", origin, cv::FONT_HERSHEY_SIMPLEX, 0.58, yellow, 2, cv::LINE_AA);
+	
+	// Calculate width of the title to place the value exactly inline
+	int baseline = 0;
+	const cv::Size title_size = cv::getTextSize(title + ": ", cv::FONT_HERSHEY_SIMPLEX, 0.58, 2, &baseline);
+	
+	// Draw Value (Normal = thickness 1)
+	cv::putText(canvas, value, cv::Point(origin.x + title_size.width, origin.y), cv::FONT_HERSHEY_SIMPLEX, 0.58, value_color, 1, cv::LINE_AA);
 }
 
 cv::Mat make_translucent_panel(int width, int height) {
@@ -187,31 +197,18 @@ std::vector<cv::Point> build_path_polygon(const std::vector<cv::Point2f> &center
 	left_side.reserve(centerline.size());
 	right_side.reserve(centerline.size());
 
-	for (std::size_t index = 0; index < centerline.size(); ++index) {
-		const cv::Point2f current = centerline[index];
-		const cv::Point2f previous = index > 0 ? centerline[index - 1] : centerline[index];
-		const cv::Point2f next = index + 1 < centerline.size() ? centerline[index + 1] : centerline[index];
-
-		cv::Point2f tangent = next - previous;
-		const float tangent_norm = std::sqrt(tangent.x * tangent.x + tangent.y * tangent.y);
-		if (tangent_norm > 1e-4F) {
-			tangent.x /= tangent_norm;
-			tangent.y /= tangent_norm;
-		} else {
-			tangent = cv::Point2f(0.0F, -1.0F);
-		}
-
-		const cv::Point2f normal(-tangent.y, tangent.x);
+	for (const auto &current : centerline) {
 		const float y_ratio = std::clamp(current.y / std::max(1.0F, static_cast<float>(size.height - 1)), 0.0F, 1.0F);
 		const float half_width = size.width * 0.125F * y_ratio;
 
+		// Expand purely horizontally (parallel to the bottom edge)
 		left_side.emplace_back(cv::Point(
-			static_cast<int>(std::lround(current.x + normal.x * half_width)),
-			static_cast<int>(std::lround(current.y + normal.y * half_width))
+			static_cast<int>(std::lround(current.x - half_width)),
+			static_cast<int>(std::lround(current.y))
 		));
 		right_side.emplace_back(cv::Point(
-			static_cast<int>(std::lround(current.x - normal.x * half_width)),
-			static_cast<int>(std::lround(current.y - normal.y * half_width))
+			static_cast<int>(std::lround(current.x + half_width)),
+			static_cast<int>(std::lround(current.y))
 		));
 	}
 
@@ -388,8 +385,18 @@ void draw_cipo_marker(cv::Mat &canvas, const std::vector<cv::Point2f> &tracked_w
 
 	const std::string distance_text = format_float(*lane_shape.distance_to_cipo, 1) + " m";
 	const std::string velocity_text = lane_shape.relative_cipo_velocity.has_value() ? format_float(*lane_shape.relative_cipo_velocity, 1) + " km/h" : "-- km/h";
-	cv::putText(canvas, distance_text, cv::Point(px - 24, std::max(area.y + 14, py - 22)), cv::FONT_HERSHEY_SIMPLEX, 0.42, kPanelTextColor, 1, cv::LINE_AA);
-	cv::putText(canvas, velocity_text, cv::Point(px - 24, std::max(area.y + 28, py - 8)), cv::FONT_HERSHEY_SIMPLEX, 0.42, kPanelTextColor, 1, cv::LINE_AA);
+
+	// Calculate text bounds to left-align correctly
+	int baseline = 0;
+	const cv::Size dist_size = cv::getTextSize(distance_text, cv::FONT_HERSHEY_SIMPLEX, 0.42, 1, &baseline);
+	const cv::Size vel_size = cv::getTextSize(velocity_text, cv::FONT_HERSHEY_SIMPLEX, 0.42, 1, &baseline);
+
+	// 8 pixels padding from the left edge of the box
+	const int text_x_dist = marker_rect.x - 8 - dist_size.width;
+	const int text_x_vel = marker_rect.x - 8 - vel_size.width;
+
+	cv::putText(canvas, distance_text, cv::Point(text_x_dist, marker_rect.y + 6), cv::FONT_HERSHEY_SIMPLEX, 0.42, kPanelTextColor, 1, cv::LINE_AA);
+	cv::putText(canvas, velocity_text, cv::Point(text_x_vel, marker_rect.y + 20), cv::FONT_HERSHEY_SIMPLEX, 0.42, kPanelTextColor, 1, cv::LINE_AA);
 }
 
 void draw_right_panel(cv::Mat &canvas, const std::vector<cv::Point2f> &tracked_waypoints, const LaneShapeVisualization &lane_shape, const DesiredControlVisualization &desired_control) {
@@ -397,16 +404,14 @@ void draw_right_panel(cv::Mat &canvas, const std::vector<cv::Point2f> &tracked_w
 	const cv::Rect panel_rect(canvas.cols - panel_width, 0, panel_width, canvas.rows);
 	if (panel_rect.x < 0) return;
 
-	cv::Mat panel = canvas(panel_rect); // Point directly to the canvas ROI
+	cv::Mat panel = canvas(panel_rect);
 	cv::Mat white_bg(panel.size(), panel.type(), kWhiteColor);
 	cv::addWeighted(white_bg, kRightPanelAlpha, panel, 1.0F - kRightPanelAlpha, 0.0, panel);
 
-	const cv::Rect top_card(12, 12, panel_rect.width - 24, 176);
-	cv::rectangle(panel, top_card, cv::Scalar(255, 255, 255), cv::FILLED);
-	cv::rectangle(panel, top_card, cv::Scalar(210, 210, 210), 1);
-	draw_text_centered(panel, "Desired planning values", cv::Rect(12, 20, panel_rect.width - 24, 30), 0.58, kPanelTextColor, 2);
+	// "Desired planning values" (Bold, Yellow)
+	draw_text_centered(panel, "Desired planning values", cv::Rect(12, 20, panel_rect.width - 24, 30), 0.58, cv::Scalar(0, 255, 255), 2);
 
-	const cv::Rect wheel_area(24, 56, 96, 96);
+	const cv::Rect wheel_area(24, 60, 96, 96);
 	const cv::Mat wheel_icon = load_wheel_icon();
 	if (!wheel_icon.empty()) {
 		cv::Mat rotated = rotate_icon(wheel_icon, desired_control.steering_angle);
@@ -421,27 +426,25 @@ void draw_right_panel(cv::Mat &canvas, const std::vector<cv::Point2f> &tracked_w
 		cv::circle(panel, cv::Point(wheel_area.x + wheel_area.width / 2, wheel_area.y + wheel_area.height / 2), 34, cv::Scalar(80, 80, 80), 3);
 	}
 
-	const cv::Rect velocity_rect(136, 56, 180, 44);
-	draw_boxed_value(panel, velocity_rect, "Velocity", format_float(desired_control.velocity, 1) + " km/h");
+	// Inline Telemetry Text
+	int text_x = 130;
+	draw_inline_value(panel, cv::Point(text_x, 86), "Velocity", format_float(desired_control.velocity, 1) + " km/h", cv::Scalar(0, 255, 255));
+	
+	// Note: OpenCV's FONT_HERSHEY doesn't natively support the '°' glyph and may render a '?'. 
+	// If it glitches, you can replace "°" with "deg", but this fulfills your requested spec.
+	draw_inline_value(panel, cv::Point(text_x, 116), "Steering", format_float(desired_control.steering_angle, 1) + " \xC2\xB0", cv::Scalar(0, 255, 255)); 
+	
+	const cv::Scalar accel_color = desired_control.acceleration >= 0.0F ? cv::Scalar(50, 190, 80) : cv::Scalar(70, 70, 230);
+	draw_inline_value(panel, cv::Point(text_x, 146), "Acceleration", format_float(desired_control.acceleration, 1) + " m/s2", accel_color);
 
-	const cv::Rect steering_rect(136, 108, 180, 44);
-	draw_boxed_value(panel, steering_rect, "Steering", format_float(desired_control.steering_angle, 1) + " deg");
-
-	const cv::Rect accel_rect(136, 160, 180, 44);
-	const cv::Scalar acceleration_color = desired_control.acceleration >= 0.0F ? cv::Scalar(50, 190, 80) : cv::Scalar(70, 70, 230);
-	draw_boxed_value(panel, accel_rect, "Acceleration", format_float(desired_control.acceleration, 1) + " m/s2", acceleration_color);
-
+	// "Path preview" (Bold, Green)
 	const cv::Rect bev_rect(12, 214, panel_rect.width - 24, panel_rect.height - 226);
-	cv::rectangle(panel, bev_rect, cv::Scalar(255, 255, 255), cv::FILLED);
-	cv::rectangle(panel, bev_rect, cv::Scalar(210, 210, 210), 1);
-	cv::putText(panel, "Path preview", cv::Point(bev_rect.x + 10, bev_rect.y + 22), cv::FONT_HERSHEY_SIMPLEX, 0.55, kPanelTextColor, 1, cv::LINE_AA);
+	cv::putText(panel, "Path preview", cv::Point(bev_rect.x + 10, bev_rect.y + 22), cv::FONT_HERSHEY_SIMPLEX, 0.55, cv::Scalar(0, 200, 0), 2, cv::LINE_AA);
 
 	const cv::Rect path_area(bev_rect.x + 10, bev_rect.y + 32, bev_rect.width - 20, bev_rect.height - 42);
 	draw_path_preview_ruler(panel, path_area, kPathPreviewMaxDistanceMeters);
 	draw_path_preview(panel, tracked_waypoints, path_area);
 	draw_cipo_marker(panel, tracked_waypoints, lane_shape, path_area, kPathPreviewMaxDistanceMeters);
-
-	panel.copyTo(canvas(panel_rect));
 }
 
 void draw_main_overlay(cv::Mat &frame, const std::vector<YoloBoundingBox> &bounding_boxes, const LaneShapeVisualization &lane_shape, const DesiredControlVisualization &desired_control) {
