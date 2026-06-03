@@ -7,7 +7,6 @@
 
 #include <opencv2/opencv.hpp>
 
-#include <array>
 #include <optional>
 #include <string>
 #include <vector>
@@ -20,22 +19,7 @@ inline constexpr int kVisualizationPanelWidth = 360;
 inline constexpr float kDetectionOverlayAlpha = 0.40F;
 inline constexpr float kRightPanelAlpha = 0.40F;
 inline constexpr float kDrivablePathAlpha = 0.45F;
-inline constexpr float kBevRulerMaxDistanceMeters = 100.0F;
-inline constexpr float kBevLateralHalfSpanMeters = 6.0F;
-
-inline constexpr std::array<float, 9> kNormalToBevMatrixData = {
-	0.00209514907F, -0.000941721466F, -9.24906396F,
-	0.00662758637F, -0.000352940531F, -3.33396502F,
-	0.000120077371F, -0.00411343505F, 1.0F
-};
-
-inline const cv::Matx33f kNormalToBev(
-	kNormalToBevMatrixData[0], kNormalToBevMatrixData[1], kNormalToBevMatrixData[2],
-	kNormalToBevMatrixData[3], kNormalToBevMatrixData[4], kNormalToBevMatrixData[5],
-	kNormalToBevMatrixData[6], kNormalToBevMatrixData[7], kNormalToBevMatrixData[8]
-);
-
-inline const cv::Matx33f kBevToNormal = kNormalToBev.inv();
+inline constexpr float kPathPreviewMaxDistanceMeters = 100.0F;
 
 inline const cv::Scalar kCipoColor(0, 0, 255);
 inline const cv::Scalar kCuttingInColor(0, 255, 255);
@@ -44,6 +28,13 @@ inline const cv::Scalar kPositiveAccelerationColor(0, 200, 0);
 inline const cv::Scalar kNegativeAccelerationColor(0, 0, 255);
 inline const cv::Scalar kWhiteColor(255, 255, 255);
 inline const cv::Scalar kPanelTextColor(35, 35, 35);
+
+const cv::Mat homography_matrix = (
+	cv::Mat_<float>(3, 3) <<
+		0.00209514907F, -0.000941721466F, -9.24906396F,
+		0.00662758637F, -0.000352940531F, -3.33396502F,
+		0.000120077371F, -0.00411343505F, 1.0F
+);
 
 struct YoloBoundingBox {
 	int class_id = 0;
@@ -57,6 +48,7 @@ struct LaneShapeVisualization {
 	bool has_cipo_object = false;
 	std::optional<float> distance_to_cipo;
 	std::optional<float> relative_cipo_velocity;
+	// Normal image coordinates in the 1024x512 frame.
 	std::vector<cv::Point2f> tracked_waypoints;
 };
 
