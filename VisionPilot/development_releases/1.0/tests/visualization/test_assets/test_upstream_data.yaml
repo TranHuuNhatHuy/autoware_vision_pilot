@@ -24,4 +24,4 @@ lane_shape:
 desired_planning:
   steering_angle: -30.00
   velocity: 40.00
-  acceleration: -2.00
+  acceleration: 2.00

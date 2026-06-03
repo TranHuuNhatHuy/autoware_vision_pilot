@@ -97,11 +97,6 @@ visualization::DesiredControlVisualization load_desired_control(const cv::FileNo
 	return desired_control;
 }
 
-bool should_show_window() {
-	const char *show_flag = std::getenv("VISUALIZATION_TEST_SHOW");
-	return show_flag != nullptr && std::string(show_flag) == "1";
-}
-
 }  // namespace
 
 int main(int argc, char **argv) {
@@ -142,15 +137,6 @@ int main(int argc, char **argv) {
 	}
 
 	std::cout << "Saved rendered visualization to: " << output_path << '\n';
-
-	if (should_show_window()) {
-		visualization::render_frame(rendered, "VisionPilot Visualization Test");
-		std::cout << "Press any key in the window to close it.\n";
-		cv::waitKey(0);
-		visualization::close_windows();
-	} else {
-		std::cout << "GUI display is disabled by default. Set VISUALIZATION_TEST_SHOW=1 to open a window.\n";
-	}
 
 	return 0;
 }
