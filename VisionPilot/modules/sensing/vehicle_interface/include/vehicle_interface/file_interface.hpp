@@ -8,7 +8,7 @@
 class FileInterface : public VehicleInterface
 {
 public:
-    FileInterface(const std::string& filename);
+    FileInterface(const std::string& filename, bool loop);
     ~FileInterface() override = default;
 
     // Read vehicle speed via CAN frame
@@ -18,6 +18,7 @@ public:
     void write(double steering, double acceleration) override;
 
 private:
+    bool loop_;
     std::vector<double> speeds_;
     int frame_cnt_ = 0;
 };

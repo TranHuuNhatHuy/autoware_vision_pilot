@@ -3,7 +3,7 @@
 #include <fstream>
 #include <vehicle_interface/file_interface.hpp>
 
-FileInterface::FileInterface(const std::string& filename)
+FileInterface::FileInterface(const std::string& filename, bool loop) : loop_(loop)
 {
     std::ifstream file(filename);
     if (file.is_open())
@@ -41,7 +41,14 @@ double FileInterface::read()
 
     if (frame_cnt_ >= speeds_.size())
     {
-        throw std::runtime_error("FileInterface: read() called past end of speeds data");
+        if (loop_)
+        {
+            frame_cnt_ = 0;
+        }
+        else
+        {
+            throw std::runtime_error("FileInterface: read() called past end of speeds data");
+        }
     }
 
     return speeds_[frame_cnt_++];
