@@ -10,10 +10,14 @@ name: deploy-docs-site
 
 on:
   push:
+    # TODO(before upstream PR): reduce to [main] and restore the paths filter.
     branches: [main, Tran_GHIO]
-    paths:
-      - docs/**
-      - .github/workflows/pages.yaml
+    # The paths filter is disabled while testing on a fork. With it active, any
+    # commit that does not touch docs/ is silently ignored -- including an empty
+    # commit -- which looks exactly like "the workflow is broken".
+    # paths:
+    #   - docs/**
+    #   - .github/workflows/pages.yaml
   workflow_dispatch:
 
 permissions:
