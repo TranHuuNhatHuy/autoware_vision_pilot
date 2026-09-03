@@ -1,7 +1,7 @@
 ---
 layout: doc
 title: Simulation
-permalink: /docs/simulation/
+permalink: /github-io/simulation/
 lede: Close the loop in CARLA - the same VisionPilot binary, steering and braking a virtual vehicle through a ROS 2 bridge.
 description: Running Vision Pilot closed-loop in the CARLA simulator via the ROS 2 bridge, plus Zenoh and SODA.Sim support status.
 ---
@@ -79,7 +79,7 @@ In `config/vision_pilot_ros2.conf`, point at the bridge's camera topic:
 source.input_camera_topic = /carla/hero/main_cam/image
 ```
 
-Remember to configure **before** building - see [configuration]({{ '/docs/configuration/' | relative_url }}).
+Remember to configure **before** building - see [configuration]({{ '/github-io/configuration/' | relative_url }}).
 
 ## 5. Build and run the CARLA bridge
 
@@ -127,7 +127,7 @@ check the bridge is subscribed to the same names.
 
 **Camera geometry looks wrong.** The homography in `config/H.yaml` describes a specific camera
 mounting. A simulated camera with a different FoV or pose needs its own calibration - see
-[hardware and calibration]({{ '/docs/hardware/' | relative_url }}).
+[hardware and calibration]({{ '/github-io/hardware/' | relative_url }}).
 
 ## Recording a run
 

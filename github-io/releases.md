@@ -1,7 +1,7 @@
 ---
 layout: doc
 title: Releases
-permalink: /docs/releases/
+permalink: /github-io/releases/
 lede: Tagged versions of Vision Pilot, what changed in each, and what is planned next.
 description: Vision Pilot release history and roadmap, from v0.5 to the current release.
 ---
@@ -12,7 +12,7 @@ weights are attached.
 
 <div class="note tip" markdown="1">
 Current release: **v{{ site.version }}**. Install it from source, as a `.deb`, or via Docker -
-see [getting started]({{ '/docs/getting-started/' | relative_url }}).
+see [getting started]({{ '/github-io/getting-started/' | relative_url }}).
 </div>
 
 ## History
@@ -85,7 +85,7 @@ For the exact commit range behind any tag, use the
     <span class="card-tag">Safety</span>
     <h3>Standards compliance</h3>
     <p>Safety verification and compliance work towards ISO 26262 and ISO 8800. See the
-       <a href="{{ '/docs/functional-safety/' | relative_url }}">functional safety documentation</a>.</p>
+       <a href="{{ '/github-io/functional-safety/' | relative_url }}">functional safety documentation</a>.</p>
   </div>
   <div class="card">
     <span class="card-tag">Simulation</span>

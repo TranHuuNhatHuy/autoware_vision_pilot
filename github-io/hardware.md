@@ -1,7 +1,7 @@
 ---
 layout: doc
 title: Hardware and calibration
-permalink: /docs/hardware/
+permalink: /github-io/hardware/
 lede: Choosing a camera, mounting it on the vehicle, and computing the homography that lets Vision Pilot measure the road from a single image.
 description: Camera selection, mounting guidance and the ground-checkerboard homography calibration procedure for Vision Pilot.
 ---
@@ -189,4 +189,4 @@ L = 2.860   # front axle to CoG (m), where L = Lf + Lr
 
 And check the CAN database in `config/vehicle.dbc` matches your vehicle's bus.
 
-See [configuration]({{ '/docs/configuration/' | relative_url }}) for the rest.
+See [configuration]({{ '/github-io/configuration/' | relative_url }}) for the rest.

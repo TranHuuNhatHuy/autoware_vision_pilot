@@ -1,7 +1,7 @@
 ---
 layout: doc
 title: Functional safety
-permalink: /docs/functional-safety/
+permalink: /github-io/functional-safety/
 lede: Vision Pilot is written to be safety-certifiable. This is what that means, what exists today, and what an integrator is responsible for.
 description: Vision Pilot functional safety documentation - safety plan, SEooC scope, software requirements and safety metrics.
 ---
@@ -68,7 +68,7 @@ in full. An assumption that does not hold in your vehicle invalidates the argume
 
 ## How safety shapes the architecture
 
-The [architecture]({{ '/docs/architecture/' | relative_url }}) is built around the safety case
+The [architecture]({{ '/github-io/architecture/' | relative_url }}) is built around the safety case
 rather than bolted to it:
 
 - **Two independent AI paths.** A perception path producing explicit, inspectable quantities, and
@@ -80,22 +80,22 @@ rather than bolted to it:
   behaviour.
 - **A stated sensor specification.** 50–55° FoV, 2 MP, one RGB camera, specified mounting and a
   calibrated homography. These are safety-relevant constraints, not recommendations. See
-  [hardware and calibration]({{ '/docs/hardware/' | relative_url }}).
+  [hardware and calibration]({{ '/github-io/hardware/' | relative_url }}).
 
 ## Verification you can run today
 
 - **Open-loop replay** against recorded sequences with ground-truth speed logs -
-  [getting started]({{ '/docs/getting-started/#run-on-the-sample-dataset' | relative_url }}).
+  [getting started]({{ '/github-io/getting-started/#run-on-the-sample-dataset' | relative_url }}).
 - **Closed-loop simulation** in CARLA, where the stack's own commands move the vehicle -
-  [simulation]({{ '/docs/simulation/' | relative_url }}).
+  [simulation]({{ '/github-io/simulation/' | relative_url }}).
 - **Frame-level logging** to Rerun, so any run can be reconstructed and inspected after the fact -
-  [modules]({{ '/docs/modules/#logging' | relative_url }}).
+  [modules]({{ '/github-io/modules/#logging' | relative_url }}).
 
 ## On the roadmap
 
 Safety verification and standards compliance against **ISO 26262** (functional safety) and
 **ISO 8800** (safety and AI) are tracked on the
-[roadmap]({{ '/docs/releases/#roadmap' | relative_url }}). The SEooC scope definition is currently
+[roadmap]({{ '/github-io/releases/#roadmap' | relative_url }}). The SEooC scope definition is currently
 a **draft** and will be revised as that work progresses.
 
 Contributions to the safety work are welcome - it is discussed in the weekly

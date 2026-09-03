@@ -1,7 +1,7 @@
 ---
 layout: doc
 title: Configuration
-permalink: /docs/configuration/
+permalink: /github-io/configuration/
 lede: Vision Pilot reads three plain-text config files at startup. This page documents every key in them.
 description: Reference for vision_pilot.conf, vision_pilot_test.conf and vision_pilot_ros2.conf.
 ---
@@ -18,7 +18,7 @@ install. The files are `key = value` text; `#` starts a comment.
 Two more files sit alongside them:
 
 - **`H.yaml`** - the camera homography matrix. Replace it with your own after
-  [calibration]({{ '/docs/hardware/' | relative_url }}); keep a copy of the original so you can
+  [calibration]({{ '/github-io/hardware/' | relative_url }}); keep a copy of the original so you can
   still run the sample data.
 - **`vehicle.dbc`** - the CAN database used by the vehicle interface.
 
@@ -154,7 +154,7 @@ For CARLA, set the camera topic to the bridge's output:
 source.input_camera_topic = /carla/hero/main_cam/image
 ```
 
-See the [simulation guide]({{ '/docs/simulation/' | relative_url }}) for the full closed-loop setup.
+See the [simulation guide]({{ '/github-io/simulation/' | relative_url }}) for the full closed-loop setup.
 
 ## Common configurations
 
