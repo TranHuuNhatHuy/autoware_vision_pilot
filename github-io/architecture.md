@@ -1,7 +1,7 @@
 ---
 layout: doc
 title: Architecture
-permalink: /docs/architecture/
+permalink: /github-io/architecture/
 lede: How a camera frame becomes a steering and throttle command - and why there are two AI paths running side by side.
 description: The Vision Pilot hybrid end-to-end AI architecture, its three AI models, and the Safety Guardian that fuses them.
 ---
@@ -35,7 +35,7 @@ arrives alongside it, from a speed log, a CAN bus, or a ROS 2 topic.
 ### 2. Preprocessing
 
 Frames are normalised into the tensor layout the models expect. The **homography matrix**
-`H.yaml` - produced by [calibration]({{ '/docs/hardware/' | relative_url }}) - maps image
+`H.yaml` - produced by [calibration]({{ '/github-io/hardware/' | relative_url }}) - maps image
 coordinates to flat road coordinates, which is what makes metric distance estimation from a single
 camera possible at all.
 
@@ -101,7 +101,7 @@ disagree.
 
 The sensor specification is a single front-facing RGB camera, 50–55° horizontal FoV, 2 MP. Wider
 lenses are explicitly *not* suitable: they trade away the long-range detail that highway ADAS
-features depend on. See [hardware]({{ '/docs/hardware/' | relative_url }}).
+features depend on. See [hardware]({{ '/github-io/hardware/' | relative_url }}).
 
 ### 10 Hz is a deliberate target
 
@@ -112,13 +112,13 @@ super-human, and the headroom buys determinism.
 ### Certifiable, not certified
 
 The codebase is written to be productionizable and safety-certifiable. The
-[Functional Safety documentation]({{ '/docs/functional-safety/' | relative_url }}) covers the
+[Functional Safety documentation]({{ '/github-io/functional-safety/' | relative_url }}) covers the
 safety plan, the Safety Element out of Context scope, software requirements and safety metrics -
 including the assumptions of use and known limitations that any integrator must read before
 putting this on a road.
 
 ## Next
 
-- [Modules]({{ '/docs/modules/' | relative_url }}) - what each directory under
+- [Modules]({{ '/github-io/modules/' | relative_url }}) - what each directory under
   `VisionPilot/modules/` actually contains
-- [Configuration]({{ '/docs/configuration/' | relative_url }}) - the knobs on each stage
+- [Configuration]({{ '/github-io/configuration/' | relative_url }}) - the knobs on each stage

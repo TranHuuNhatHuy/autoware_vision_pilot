@@ -1,7 +1,7 @@
 ---
 layout: doc
 title: Documentation
-permalink: /docs/
+permalink: /github-io/
 lede: Everything you need to build, run, configure and contribute to Vision Pilot - the single source of truth for the project.
 description: Documentation index for Vision Pilot, the Autoware Foundation's open-source L2 ADAS stack.
 ---
@@ -16,22 +16,22 @@ Apache 2.0 licence, for commercial and research use alike.
 ## New here? Start with these
 
 <div class="grid grid-2">
-  <a class="card" href="{{ '/docs/getting-started/' | relative_url }}">
+  <a class="card" href="{{ '/github-io/getting-started/' | relative_url }}">
     <span class="card-tag">1 · Install</span>
     <h3>Getting started →</h3>
     <p>Build from source, install the Debian package, or run the Docker image - then replay the sample dataset.</p>
   </a>
-  <a class="card" href="{{ '/docs/architecture/' | relative_url }}">
+  <a class="card" href="{{ '/github-io/architecture/' | relative_url }}">
     <span class="card-tag">2 · Understand</span>
     <h3>Architecture →</h3>
     <p>How camera frames become steering and throttle commands, and where the safety path sits.</p>
   </a>
-  <a class="card" href="{{ '/docs/configuration/' | relative_url }}">
+  <a class="card" href="{{ '/github-io/configuration/' | relative_url }}">
     <span class="card-tag">3 · Configure</span>
     <h3>Configuration →</h3>
     <p>Every key in the three <code>.conf</code> files, with defaults and valid values.</p>
   </a>
-  <a class="card" href="{{ '/docs/hardware/' | relative_url }}">
+  <a class="card" href="{{ '/github-io/hardware/' | relative_url }}">
     <span class="card-tag">4 · Go live</span>
     <h3>Hardware and calibration →</h3>
     <p>Choosing a camera, mounting it, and computing the homography that Vision Pilot needs.</p>
@@ -65,7 +65,7 @@ highway driving speeds (0–70 mph), and away from construction zones and roadwo
 
 **Sensor specification.** A single, front-facing, monocular RGB camera with a **50–55° horizontal
 field of view** at **2 MP** resolution. That is the whole sensor set. See
-[hardware and calibration]({{ '/docs/hardware/' | relative_url }}) for mounting and camera selection.
+[hardware and calibration]({{ '/github-io/hardware/' | relative_url }}) for mounting and camera selection.
 
 **No HD maps.** Vision Pilot operates in a mapless mode and follows the road in real time. There
 is no localisation stack to run and no 3D map to keep current. (Intelligent speed assist does use
@@ -73,7 +73,7 @@ speed-limit map data - that is a very different thing from an HD map.)
 
 **Compute.** The stack is designed to run at **10 Hz** within a budget of roughly
 **3–5 INT8 TOPs**. It runs on CPU via ONNX Runtime, or on NVIDIA GPUs via the CUDA/TensorRT
-execution provider - see [configuration]({{ '/docs/configuration/' | relative_url }}).
+execution provider - see [configuration]({{ '/github-io/configuration/' | relative_url }}).
 
 <div class="note tip" markdown="1">
 For a 10-minute overview of the project's goals and design, see the
@@ -92,7 +92,7 @@ For a 10-minute overview of the project's goals and design, see the
 | `Sensing/` | Camera selection and mounting guide |
 | `Simulation/` | CARLA (ROS 2 and Zenoh) and SODA.Sim integrations |
 | `Functional_Safety/` | Safety plan, SEooC scope, software requirements, safety metrics |
-| `docs/` | This documentation site |
+| `github-io/` | This documentation site |
 
 ## Related projects
 

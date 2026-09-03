@@ -1,7 +1,7 @@
 ---
 layout: doc
 title: Modules
-permalink: /docs/modules/
+permalink: /github-io/modules/
 lede: A tour of VisionPilot/modules/ - what each component does, what it depends on, and where its own README lives.
 description: >-
   Reference for the Vision Pilot module tree - sensing, engine, models, safety guardian,
@@ -125,7 +125,7 @@ http://127.0.0.1:8080/
 The local OpenCV preview is disabled while WebRTC is active.
 
 **Dependencies:** GStreamer (`base`, `bad` plugins), `libsoup2.4`, `json-glib`, OpenCV - all
-covered by the [prerequisites]({{ '/docs/getting-started/#prerequisites' | relative_url }}).
+covered by the [prerequisites]({{ '/github-io/getting-started/#prerequisites' | relative_url }}).
 
 ## Logging
 
@@ -155,4 +155,4 @@ Built with `-DENABLE_ROS2_INTERFACE=ON`.
 - **`vehicle_ros2_interface`** - subscribes to the speed topic and publishes steering and
   acceleration commands.
 
-This is the path the [CARLA bridge]({{ '/docs/simulation/' | relative_url }}) uses.
+This is the path the [CARLA bridge]({{ '/github-io/simulation/' | relative_url }}) uses.

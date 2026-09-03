@@ -1,7 +1,7 @@
 ---
 layout: doc
 title: Contributing
-permalink: /docs/contributing/
+permalink: /github-io/contributing/
 lede: Vision Pilot is developed in the open by the Privately Owned Vehicle working group. Here is how to join in.
 description: How to onboard, join the working group, report bugs and submit pull requests to Vision Pilot.
 ---
@@ -92,7 +92,7 @@ for the full house style.
 
 ## Contributing to this site
 
-The documentation site lives in [`docs/`]({{ site.links.repo }}/tree/main/docs) and is a Jekyll
+The documentation site lives in [`github-io/`]({{ site.links.repo }}/tree/main/docs) and is a Jekyll
 site published by GitHub Pages. Every page has an **Edit this page** link at the bottom that takes
 you straight to the source file.
 
@@ -111,12 +111,12 @@ Pages are Markdown with YAML front matter:
 ---
 layout: doc
 title: Page title
-permalink: /docs/your-page/
+permalink: /github-io/your-page/
 lede: One sentence describing what the page covers.
 ---
 ```
 
-Add new pages to the `docs_nav` list in `docs/_config.yml` so they appear in the sidebar.
+Add new pages to the `docs_nav` list in `github-io/_config.yml` so they appear in the sidebar.
 
 ## Code of conduct and licence
 

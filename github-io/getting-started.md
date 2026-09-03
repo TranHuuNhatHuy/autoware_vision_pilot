@@ -1,7 +1,7 @@
 ---
 layout: doc
 title: Getting started
-permalink: /docs/getting-started/
+permalink: /github-io/getting-started/
 lede: Install Vision Pilot one of three ways, then replay a real driving sequence through the full pipeline in about fifteen minutes.
 description: Build Vision Pilot from source, install the Debian package or run the Docker image, then run it on the sample OpenLane dataset.
 ---
@@ -182,7 +182,7 @@ source.input_vehicle_speed = <INPUT_VEHICLE_SPEED_FILE_PATH>
 source.dataset             = open_lane
 ```
 
-The full key reference is on the [configuration page]({{ '/docs/configuration/' | relative_url }}).
+The full key reference is on the [configuration page]({{ '/github-io/configuration/' | relative_url }}).
 
 ### 3. Run
 
@@ -199,11 +199,11 @@ left-drag, pan with right-drag, zoom with the wheel, and press <kbd>R</kbd> to r
 
 ## Where to go next
 
-- Run it **closed loop** in [CARLA]({{ '/docs/simulation/' | relative_url }}) so the stack's own
+- Run it **closed loop** in [CARLA]({{ '/github-io/simulation/' | relative_url }}) so the stack's own
   commands move the vehicle.
-- Run it on **your own camera** - [hardware and calibration]({{ '/docs/hardware/' | relative_url }}).
+- Run it on **your own camera** - [hardware and calibration]({{ '/github-io/hardware/' | relative_url }}).
 - Stream the HUD to a browser over WebRTC, or log every frame to Rerun - see
-  [modules]({{ '/docs/modules/' | relative_url }}).
+  [modules]({{ '/github-io/modules/' | relative_url }}).
 
 ## Troubleshooting
 

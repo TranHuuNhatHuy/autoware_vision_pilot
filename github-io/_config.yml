@@ -1,5 +1,5 @@
 # == Vision Pilot documentation site ============================================
-# Served by GitHub Pages from the `docs/` folder of autowarefoundation/vision_pilot
+# Served by GitHub Pages from the `github-io/` folder of autowarefoundation/vision_pilot
 # Live at: https://autowarefoundation.github.io/vision_pilot/
 
 title: Vision Pilot
@@ -42,22 +42,22 @@ videos:
 docs_nav:
   - group: Start here
     items:
-      - { title: Overview, url: /docs/ }
-      - { title: Getting started, url: /docs/getting-started/ }
-      - { title: Configuration, url: /docs/configuration/ }
+      - { title: Overview, url: /github-io/ }
+      - { title: Getting started, url: /github-io/getting-started/ }
+      - { title: Configuration, url: /github-io/configuration/ }
   - group: Understand
     items:
-      - { title: Architecture, url: /docs/architecture/ }
-      - { title: Modules, url: /docs/modules/ }
+      - { title: Architecture, url: /github-io/architecture/ }
+      - { title: Modules, url: /github-io/modules/ }
   - group: Run it
     items:
-      - { title: Simulation, url: /docs/simulation/ }
-      - { title: Hardware and calibration, url: /docs/hardware/ }
+      - { title: Simulation, url: /github-io/simulation/ }
+      - { title: Hardware and calibration, url: /github-io/hardware/ }
   - group: Project
     items:
-      - { title: Releases, url: /docs/releases/ }
-      - { title: Functional safety, url: /docs/functional-safety/ }
-      - { title: Contributing, url: /docs/contributing/ }
+      - { title: Releases, url: /github-io/releases/ }
+      - { title: Functional safety, url: /github-io/functional-safety/ }
+      - { title: Contributing, url: /github-io/contributing/ }
 
 # == Build =====================================================================
 markdown: kramdown
