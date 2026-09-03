@@ -67,17 +67,6 @@ db.sqlite3-journal
 instance/
 .webassets-cache
 
-# Jekyll documentation site (docs/) - local build output and gem state.
-# Gemfile.lock is ignored on purpose: the github-pages gem already pins the whole
-# dependency tree, and a committed lock only causes platform conflicts between
-# local Ruby and the version CI runs.
-_site/
-docs/.jekyll-cache/
-docs/.jekyll-metadata
-docs/.bundle/
-docs/vendor/
-docs/Gemfile.lock
-
 # Scrapy stuff:
 .scrapy
 
